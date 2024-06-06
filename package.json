@@ -1,0 +1,75 @@
+{
+    "name": "format-via-context-menu",
+    "displayName": "Format via Context Menu",
+    "description": "Format files via the context menu.",
+    "version": "1.0.0",
+    "icon": "./assets/icon.png",
+    "publisher": "Iancovski",
+    "homepage": "https://github.com/Iancovski/format-via-context-menu",
+    "license": "MIT",
+    "keywords": [
+        "format",
+        "file",
+        "context",
+        "indent"
+    ],
+        "author": {
+        "name": "Vinícius Iancovski",
+        "email": "iancovski.vinicius@gmail.com"
+    },
+        "repository": {
+        "type": "git",
+        "url": "https://github.com/Iancovski/format-via-context-menu.git"
+    },
+    "categories": [
+        "Other"
+    ],
+    "engines": {
+        "vscode": "^1.89.0"
+    },
+    "activationEvents": [],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.format",
+                "title": "Format"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "extension.format",
+                    "when": "explorerResourceIsFolder || resourceExtname == .clj || resourceExtname == .coffee || resourceExtname == .jsonc || resourceExtname == .json || resourceExtname == .c || resourceExtname == .cpp || resourceExtname == .cu || resourceExtname == .cs || resourceExtname == .css || resourceExtname == .dart || resourceExtname == .go || resourceExtname == .groovy || resourceExtname == .hbs || resourceExtname == .hlsl || resourceExtname == .html || resourceExtname == .java || resourceExtname == .jsx || resourceExtname == .js || resourceExtname == .mjs || resourceExtname == .cjs || resourceExtname == .jsonl || resourceExtname == .jl || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .tex || resourceExtname == .bib || resourceExtname == .less || resourceExtname == .lua || resourceExtname == .m || resourceExtname == .mm || resourceExtname == .pl || resourceExtname == .raku || resourceExtname == .php || resourceExtname == .ps1 || resourceExtname == .py || resourceExtname == .r || resourceExtname == .rb || resourceExtname == .rs || resourceExtname == .scss || resourceExtname == .sh || resourceExtname == .sql || resourceExtname == .swift || resourceExtname == .ts || resourceExtname == .tsx || resourceExtname == .vb || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .yaml || resourceExtname == .yml",
+                    "group": "7_format"
+                }
+            ],
+            "editor/title/context": [
+                {
+                    "command": "extension.format",
+                    "when": "resourceExtname == .clj || resourceExtname == .coffee || resourceExtname == .jsonc || resourceExtname == .json || resourceExtname == .c || resourceExtname == .cpp || resourceExtname == .cu || resourceExtname == .cs || resourceExtname == .css || resourceExtname == .dart || resourceExtname == .go || resourceExtname == .groovy || resourceExtname == .hbs || resourceExtname == .hlsl || resourceExtname == .html || resourceExtname == .java || resourceExtname == .jsx || resourceExtname == .js || resourceExtname == .mjs || resourceExtname == .cjs || resourceExtname == .jsonl || resourceExtname == .jl || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .tex || resourceExtname == .bib || resourceExtname == .less || resourceExtname == .lua || resourceExtname == .m || resourceExtname == .mm || resourceExtname == .pl || resourceExtname == .raku || resourceExtname == .php || resourceExtname == .ps1 || resourceExtname == .py || resourceExtname == .r || resourceExtname == .rb || resourceExtname == .rs || resourceExtname == .scss || resourceExtname == .sh || resourceExtname == .sql || resourceExtname == .swift || resourceExtname == .ts || resourceExtname == .tsx || resourceExtname == .vb || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .yaml || resourceExtname == .yml",
+                    "group": "7_format"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.89.0",
+        "@types/mocha": "^10.0.6",
+        "@types/node": "18.x",
+        "@typescript-eslint/eslint-plugin": "^7.11.0",
+        "@typescript-eslint/parser": "^7.11.0",
+        "eslint": "^8.57.0",
+        "typescript": "^5.4.5",
+        "@vscode/test-cli": "^0.0.9",
+        "@vscode/test-electron": "^2.4.0"
+    }
+}
