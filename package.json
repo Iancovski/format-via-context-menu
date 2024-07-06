@@ -1,15 +1,17 @@
 {
-    "name": "format-via-context-menu",
-    "displayName": "Format via Context Menu",
-    "description": "Format files via the context menu.",
+    "name": "format-via-explorer",
+    "displayName": "Format via Explorer",
+    "description": "Format files via the VS Code explorer's context menu.",
     "version": "1.0.0",
     "icon": "./assets/icon.png",
     "publisher": "Iancovski",
-    "homepage": "https://github.com/Iancovski/format-via-context-menu",
+    "homepage": "https://github.com/Iancovski/format-via-explorer",
     "license": "MIT",
     "keywords": [
         "format",
         "file",
+        "folder",
+        "explorer",
         "context",
         "indent"
     ],
@@ -19,7 +21,7 @@
     },
         "repository": {
         "type": "git",
-        "url": "https://github.com/Iancovski/format-via-context-menu.git"
+        "url": "https://github.com/Iancovski/format-via-explorer.git"
     },
     "categories": [
         "Other"
