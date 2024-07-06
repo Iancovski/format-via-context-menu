@@ -66,85 +66,24 @@ export default class Formatter {
     }
 
     private static async formatFile(uri: vscode.Uri) {
-        let editor: vscode.TextEditor;
-
-        const openEditors = vscode.window.visibleTextEditors;
-        if (openEditors?.length) {
-            editor = openEditors.find((value) => {
-                return value.document.uri.fsPath === uri.fsPath;
-            });
-        }
-
         try {
-            let document: vscode.TextDocument;
+            let closeAfterSave: boolean = false;
+            let document: vscode.TextDocument = vscode.workspace.textDocuments.find(doc => doc.uri.fsPath === uri.fsPath);
 
-            if (editor) {
-                document = editor.document;
-            } else {
+            if (!document) {
                 document = await vscode.workspace.openTextDocument(uri.fsPath);
+                closeAfterSave = true;
             }
 
-            const edits: vscode.TextEdit[] = await Formatter.getEdits(document);
+            await vscode.window.showTextDocument(document);
+            await vscode.commands.executeCommand('editor.action.formatDocument');
+            await document.save();
 
-            if (edits && edits.length) {
-                let formattedDocument = document.getText();
-                edits.sort((a, b) => b.range.start.compareTo(a.range.start));
-
-                for (const edit of edits) {
-                    const start = document.offsetAt(edit.range.start);
-                    const end = document.offsetAt(edit.range.end);
-                    formattedDocument = formattedDocument.substring(0, start) + edit.newText + formattedDocument.substring(end);
-                }
-
-                if (editor) {
-                    await editor.edit(async (editBuilder: vscode.TextEditorEdit) => {
-                        const entireRange = new vscode.Range(
-                            document.positionAt(0),
-                            document.positionAt(document.getText().length)
-                        );
-
-                        editBuilder.replace(entireRange, formattedDocument);
-                        await editor.document.save();
-                    });
-                } else {
-                    await fs.writeFile(uri.fsPath, formattedDocument, 'utf8');
-                }
+            if (closeAfterSave) {
+                await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
             }
         } catch (error: any) {
             vscode.window.showErrorMessage(`Error formatting file ${uri.fsPath}: ${error.message}`);
         }
-    }
-
-    private static async getEdits(document: vscode.TextDocument) {
-        let edits: vscode.TextEdit[];
-
-        if (this.isLanguageActive(document.languageId)) {
-            edits = await vscode.commands.executeCommand('vscode.executeFormatDocumentProvider', document.uri, document.languageId);
-        } else {
-            /*
-                The executeFormatDocumentProvider command may return undefined when executed right after 
-                the openTextDocument because the format document provider might not have started yet. 
-                Apparently VSCode doesn't have a method to await the format document provider's startup, 
-                so a timeout should resolve this issue.
-            */
-
-            for (let i = 1; i <= 3; i++) {
-                edits = await vscode.commands.executeCommand('vscode.executeFormatDocumentProvider', document.uri, document.languageId);
-
-                if (edits) {
-                    break;
-                }
-
-                await new Promise(resolve => setTimeout(resolve, 500));
-            }
-
-            Formatter.activeLanguages.push(document.languageId);
-        }
-
-        return edits;
-    }
-
-    private static isLanguageActive(language: string) {
-        return Formatter.activeLanguages.includes(language);
     }
 }
